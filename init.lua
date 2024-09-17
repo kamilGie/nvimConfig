@@ -1,6 +1,4 @@
---[[
-
-=====================================================================
+--[[ =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
 ========                                    .-----.          ========
@@ -146,7 +144,7 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '| ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -176,10 +174,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -229,16 +227,32 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- "HiPhish/rainbow-delimiters.nvim",
+  {
+    'HiPhish/rainbow-delimiters.nvim',
+    'windwp/nvim-ts-autotag',
+    opts = {
+      enable_close = true, -- Automatycznie zamyka tagi.
+      enable_rename = true, -- Automatycznie zmienia nazwy w parach tagów.
+      enable_close_on_slash = false, -- Opcja zamykania na slash, gdy wpiszesz </.
+    },
+    per_filetype = {
+      ['html'] = {
+        enable_close = false, -- W tym miejscu można wyłączyć autozamknięcie tagów dla konkretnego typu plików.
+      },
+    },
+  }, -- Detect tabstop and shiftwidth automatically
+
   { 'andweeb/presence.nvim', opts = {
     neovim_image_text = 'wiecej to konfiguruje niz uzyawm xd',
   } },
+
   {
     'barrett-ruth/live-server.nvim',
     opts = {
       'barrett-ruth/live-server.nvim',
       build = 'pnpm add -g live-server',
-      cmd = { 'LSStart', 'LSStop' },
+      cmd = { 'LiveServerStart', 'LiveServerStop' },
       config = true,
     },
   },
@@ -728,10 +742,10 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
