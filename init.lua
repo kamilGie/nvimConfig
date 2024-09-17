@@ -233,7 +233,15 @@ require('lazy').setup({
   { 'andweeb/presence.nvim', opts = {
     neovim_image_text = 'wiecej to konfiguruje niz uzyawm xd',
   } },
-  'barrett-ruth/live-server.nim',
+  {
+    'barrett-ruth/live-server.nvim',
+    opts = {
+      'barrett-ruth/live-server.nvim',
+      build = 'pnpm add -g live-server',
+      cmd = { 'LSStart', 'LSStop' },
+      config = true,
+    },
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -949,7 +957,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
