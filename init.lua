@@ -227,7 +227,6 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  -- "HiPhish/rainbow-delimiters.nvim",
   {
     'HiPhish/rainbow-delimiters.nvim',
     'windwp/nvim-ts-autotag',
@@ -658,7 +657,6 @@ require('lazy').setup({
             },
           },
         },
-        --
 
         lua_ls = {
           -- cmd = {...},
