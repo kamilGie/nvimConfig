@@ -227,8 +227,60 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+
+  'HiPhish/rainbow-delimiters.nvim',
+  'L3MON4D3/LuaSnip',
+  'ThePrimeagen/vim-be-good',
+  -- {
+  --   '3rd/image.nvim',
+  --   opts = {
+  --     backend = 'kitty',
+  --     integrations = {
+  --       markdown = {
+  --         enabled = true,
+  --         clear_in_insert_mode = false,
+  --         download_remote_images = true,
+  --         only_render_image_at_cursor = false,
+  --         filetypes = { 'markdown', 'vimwiki' }, -- markdown extensions (ie. quarto) can go here
+  --       },
+  --       neorg = {
+  --         enabled = true,
+  --         clear_in_insert_mode = false,
+  --         download_remote_images = true,
+  --         only_render_image_at_cursor = false,
+  --         filetypes = { 'norg' },
+  --       },
+  --       html = {
+  --         enabled = false,
+  --       },
+  --       css = {
+  --         enabled = false,
+  --       },
+  --     },
+  --     max_width = nil,
+  --     max_height = nil,
+  --     max_width_window_percentage = nil,
+  --     max_height_window_percentage = 50,
+  --     window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+  --     window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
+  --     editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
+  --     tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+  --     hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' }, -- render image files as images when opened
+  --   },
+  -- },
+
   {
-    'HiPhish/rainbow-delimiters.nvim',
+    'karb94/neoscroll.nvim',
+    opts = {
+      easing_function = 'quadratic',
+    },
+  },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
+  },
+  {
     'windwp/nvim-ts-autotag',
     opts = {
       enable_close = true, -- Automatycznie zamyka tagi.
@@ -240,8 +292,7 @@ require('lazy').setup({
         enable_close = false, -- W tym miejscu można wyłączyć autozamknięcie tagów dla konkretnego typu plików.
       },
     },
-  }, -- Detect tabstop and shiftwidth automatically
-
+  },
   { 'andweeb/presence.nvim', opts = {
     neovim_image_text = 'wiecej to konfiguruje niz uzyawm xd',
   } },
@@ -633,6 +684,7 @@ require('lazy').setup({
         clangd = {},
         gopls = {},
         pyright = {},
+        htmlhint = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -744,6 +796,8 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true }, -- Dla JSX
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true }, --
       },
     },
   },
