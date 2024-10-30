@@ -98,6 +98,7 @@ vim.g.have_nerd_font = true
 
 -- Make line numbers default
 vim.opt.number = true
+vim.opt.cmdheight = 0
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 vim.opt.relativenumber = true
@@ -220,14 +221,14 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy
 --
 --  You can press `?` in this menu for help. Use `:q` to close the window
---
 --  To update plugins you can run
 --    :Lazy update
+--
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-
+  'christoomey/vim-tmux-navigator',
   'HiPhish/rainbow-delimiters.nvim',
   'L3MON4D3/LuaSnip',
   'ThePrimeagen/vim-be-good',
@@ -268,7 +269,38 @@ require('lazy').setup({
   --     hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' }, -- render image files as images when opened
   --   },
   -- },
-
+  -- lazy.nvim
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    opts = {
+      lsp = {
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
+        },
+      },
+      -- you can enable a preset for easier configuration
+      presets = {
+        bottom_search = true, -- use a classic bottom cmdline for search
+        command_palette = true, -- position the cmdline and popupmenu together
+        long_message_to_split = true, -- long messages will be sent to a split
+        inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = false, -- add a border to hover docs and signature help
+      },
+      messages = {
+        enabled = false, -- wyłącza wszystkie komunikaty, w tym o yanked
+      },
+      throttle = 100, -- czas w milisekundach (np. 100 ms)
+      timeout = 300, -- zmień na dowolną wartość, która Ci odpowiada
+    },
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify',
+    },
+  },
   {
     'karb94/neoscroll.nvim',
     opts = {
@@ -282,20 +314,22 @@ require('lazy').setup({
   },
   {
     'windwp/nvim-ts-autotag',
-    opts = {
-      enable_close = true, -- Automatycznie zamyka tagi.
-      enable_rename = true, -- Automatycznie zmienia nazwy w parach tagów.
-      enable_close_on_slash = false, -- Opcja zamykania na slash, gdy wpiszesz </.
-    },
-    per_filetype = {
-      ['html'] = {
-        enable_close = false, -- W tym miejscu można wyłączyć autozamknięcie tagów dla konkretnego typu plików.
-      },
-    },
+    event = 'InsertEnter',
+    config = function()
+      require('nvim-ts-autotag').setup {
+        opts = {
+          enable_close = true, -- Auto close tags
+          enable_rename = true, -- Auto rename pairs of tags
+          enable_close_on_slash = false, -- Auto close on trailing </
+        },
+        per_filetype = {
+          ['html'] = {
+            enable_close = false,
+          },
+        },
+      }
+    end,
   },
-  { 'andweeb/presence.nvim', opts = {
-    neovim_image_text = 'wiecej to konfiguruje niz uzyawm xd',
-  } },
 
   {
     'barrett-ruth/live-server.nvim',
@@ -683,7 +717,13 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
-        pyright = {},
+        pyright = {
+          settings = {
+            python = {
+              pythonPath = '/opt/homebrew/bin/python3.10',
+            },
+          },
+        },
         htmlhint = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -792,8 +832,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
-        --
+        python = { 'black' },
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true }, -- Dla JSX
@@ -811,30 +850,24 @@ require('lazy').setup({
         'L3MON4D3/LuaSnip',
         build = (function()
           -- Build Step is needed for regex support in snippets.
-          -- This step is not supported in many windows environments.
-          -- Remove the below condition to re-enable on windows.
           if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
             return
           end
           return 'make install_jsregexp'
         end)(),
         dependencies = {
-          -- `friendly-snippets` contains a variety of premade snippets.
-          --    See the README about individual language/framework/plugin snippets:
-          --    https://github.com/rafamadriz/friendly-snippets
+          -- Uncomment to use friendly-snippets
           -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
+          --     'rafamadriz/friendly-snippets',
+          --     config = function()
+          --         require('luasnip.loaders.from_vscode').lazy_load()
+          --     end,
           -- },
         },
       },
       'saadparwaiz1/cmp_luasnip',
 
-      -- Adds other completion capabilities.
-      --  nvim-cmp does not ship with all sources by default. They are split
-      --  into multiple repos for maintenance purposes.
+      -- Other completion capabilities
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
     },
