@@ -3,5 +3,6 @@ test.sh
 .luarc.json
 nvim
 
+stary/
 spell/
 lazy-lock.json
